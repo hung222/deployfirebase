@@ -1,26 +1,15 @@
-name: github cd for firebase
+name: 'GitHub Action for Firebase'
+author: 'huy'
+description: 'Wraps the firebase-tools CLI to enable common commands.'
 
-on:
-  push:
-    branches:
-      - master
-      - release/*
+branding:
+  icon: 'package'
+  color: 'gray-dark'
 
-jobs:
-  firebase-deploy:
-    runs-on: ubuntu-latest
+outputs:
+  response:
+    description: 'Response from the firebase command executed'
 
-    steps:
-      - name: Trigger deploy in firebase
-        env:
-          CI: false
-        with:
-          node-version: '16.17.1'
-        run: npm install
-      - run: npm run build --prod
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+runs:
+  using: 'docker'
+  image: 'docker://w9jds/firebase-action:v12.2.1'
